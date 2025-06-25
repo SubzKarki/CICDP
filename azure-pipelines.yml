@@ -2,7 +2,7 @@
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
+#Continuous Integration
 trigger:
 - master
 
@@ -13,15 +13,12 @@ steps:
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
-
     goals: 'clean package'
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/target' # or wherever your .war is
-    Contents: '**/.war'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    contents: '**/target/*.war'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'WarFileCopy'
-    publishLocation: 'Container'
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'WarFileCopy'
